@@ -1,0 +1,14 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /tests/{testId} {
+      allow read: if true;
+      allow create: if request.auth != null && request.auth.token.email == 'nestl.skitek@gost.bic-lj.si';
+      allow update, delete: if request.auth != null && request.auth.token.email == 'nestl.skitek@gost.bic-lj.si';
+    }
+    match /reservations/{resId} {
+      allow read: if true;
+      allow create: if request.auth != null && request.resource.data.email == request.auth.token.email;
+      allow delete: if request.auth != null && resource.data.email == request.auth.token.email;
+    }
+  }
+}
